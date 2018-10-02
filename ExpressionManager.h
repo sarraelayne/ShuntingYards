@@ -1,13 +1,14 @@
-#include #pragma once
+#pragma once
 #include "ExpressionManagerInterface.h"
 #include <iostream>
 #include <string>
 #include <stack>
 using namespace std;
 
-class ExpressionManager: public ExpressionManagerInterface() {
-    public: 
-    ~ExpressionManagerInterface() {}
+class ExpressionManager: public ExpressionManagerInterface{
+    public:
+    ExpressionManager() {}
+    ~ExpressionManager() {}
     
 	bool isBalanced(string expression);
 	string postfixToInfix(string postfixExpression);
@@ -19,4 +20,4 @@ class ExpressionManager: public ExpressionManagerInterface() {
 	string newInfix;
 	string newPostfix;
 	stack<string> balancedStack;
-}
+};

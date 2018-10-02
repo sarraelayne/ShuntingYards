@@ -17,18 +17,21 @@ bool ExpressionManager::isBalanced(string expression) {
     switch(expression.at(i)) {
         case ')': 
             x = expression.top();
+            expression.pop();
             if (x == '[' || x == '{') {
                 return false;
             }
             break;
         case ']':
             x = expression.top();
+            expression.pop();
             if (x == '(' || x == '{') {
                 return false;
             }
             break;
         case '}':
             x = expression.top();
+            expression.pop();
             if (x == '[' || x == '(') {
                 return false;
             }
@@ -39,6 +42,11 @@ bool ExpressionManager::isBalanced(string expression) {
     return true;
 }
 string ExpressionManager::postfixToInfix(string postfixExpression) {
+    if (!balancedStack.empty()) {
+        while(!balancedStack.empty()) {
+            balancedStack.pop();
+        }
+    }
     return inExpression;
 }	
 string ExpressionManager::postfixEvaluate(string postfixExpression){
