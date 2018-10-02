@@ -18,7 +18,8 @@ class ExpressionManager: public ExpressionManagerInterface{
 	protected:
 	stack<char> balancedStack;
 	char x;
+	stack<int> evaluateStack;
 	string inExpression;
-	string newInfix;
+	string evalAns;
 	string newPostfix;
 };
