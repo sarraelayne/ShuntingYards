@@ -6,9 +6,6 @@
 using namespace std;
 	
 bool ExpressionManager::isBalanced(string expression) {
-    stack<char> balancedStack;
-    char x;
-    
     if (expression.length() <= 1) {
         return false;
     }
