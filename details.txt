@@ -1,4 +1,11 @@
 out_file1.txt
+isBalanced { [ ) } False				      |	isBalanced { [ ) } True
+isBalanced { ( [ ] } ) False				      |	isBalanced { ( [ ] } ) True
+isBalanced { False					      |	isBalanced { True
+isBalanced } False					      <
+isBalanced ( } False					      <
+isBalanced ( { { } } False				      <
+isBalanced } { False					      <
 out_file2.txt
 out_file3.txt
 out_file4.txt
