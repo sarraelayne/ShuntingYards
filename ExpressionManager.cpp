@@ -48,6 +48,9 @@ bool ExpressionManager::isPair(string a, string b) {
         return false;
     }
 }
+/*bool ExpressionManager::process_operator(stack<string> &operandStack, string &postfixString, string &) {
+    
+}*/
 string ExpressionManager::postfixToInfix(string postfixExpression) {
     istringstream iss(postfixExpression);
     istream_iterator<string> beg(iss), end;
@@ -58,12 +61,15 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
     
     for (int i = 0; i < postfixExpression.size(); i++) {
         isDigitCheck = atoi(pfVector[i].c_str());
+        cout << "isDigitCheck: " << isDigitCheck << endl;
         if (isdigit(isDigitCheck)) {
+            cout << "isDigitCheck2: " << isDigitCheck << endl;
+            cout << "Pushing: " << pfVector[i] << endl;
             operandStack.push(pfVector[i]);
         }
         else if (pfVector[i] == "+" || pfVector[i] == "-" || pfVector[i] == "*" 
             || pfVector[i] == "/" || pfVector[i] == "%") {
-            
+            cout << "size: " << operandStack.size() << endl;
             if (operandStack.size() < 2) {
                 return "invalid: too small";
             }
@@ -74,13 +80,20 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
                 operandStack.pop();
                 string o2 = operandStack.top();
                 operandStack.pop();
-                newString = "(" + o2 + " " + pfVector[i] + " " + o1 + ")";
+                newString = "( " + o2 + " " + pfVector[i] + " " + o1 + " )";
                 cout << "newString: " << newString << endl;
                 operandStack.push(newString);
             }
         }
     }
-    return "";
+    cout << "top: " << operandStack.top() << endl;
+    if (operandStack.size() == 1) {
+        postfixString = operandStack.top();
+        return postfixString;
+    }
+    else {
+        return "invalid: not valid postfix string";
+    }
 }	
 string ExpressionManager::postfixEvaluate(string postfixExpression){
     int a;

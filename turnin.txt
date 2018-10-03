@@ -24,17 +24,17 @@ postfixEvaluate 0 3 2 + *
 postfixEvaluate 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 42 / + % + % / + % + % / + % + % / + % + % / + % + % / + % + % / + % + % / + % + % /
   1
 postfixToInfix 3 4 + 3 2 - * 2 2 / - 24 3 / +
-  invalid: too small
+  invalid: not valid postfix string
 postfixToInfix 40 2 4 + 1 1 + - * 4 5 / 6 / -
-  invalid: too small
+  invalid: not valid postfix string
 postfixToInfix 5 5 5 5 5 5 5 - - - - - -
-  invalid: too small
+  invalid: not valid postfix string
 postfixToInfix 3 3 +
-  invalid: too small
+  invalid: not valid postfix string
 postfixToInfix 3 8 % 3 8 % % 3 8 % 3 8 % % %
-  invalid: too small
+  invalid: not valid postfix string
 postfixToInfix 42 42 42 * + 42 42 / - 42 % 42 42 * 42 - 42 / + 42 % 42 42 42 * + 42 42 / - 42 % + 42 42 * 42 - 42 / + 42 % 42 42 42 * + 42 42 / - + 42 % 42 42 * 42 + 42 + 42 + 42 / 42 % 42 42 * 42 + 42 + 42 / 42 % 42 % + +
-  invalid: too small
+  invalid: not valid postfix string
 infixToPostfix 40 * ( 2 + 4 - ( 2 + 2 ) ) - 4 / 5 / 6
   
 infixToPostfix ( 3 + 2 + 13 ) / 4
@@ -64,12 +64,36 @@ postfixEvaluate 4 5 + 6 0 * /
 postfixEvaluate } 78 97 + 6 / 5 +
   34
 postfixToInfix 3 + 3 /
-  invalid: too small
+  invalid: not valid postfix string
 postfixToInfix 3 3 4 +
-  invalid: too small
+  invalid: not valid postfix string
 postfixToInfix *
   invalid: too small
 postfixToInfix + 3 3
   invalid: too small
 postfixToInfix 3 3
+  invalid: not valid postfix string
+postfixToInfix five plus three
+  invalid: not valid postfix string
+postfixToInfix 4.3 2 +
+  invalid: not valid postfix string
+postfixToInfix 56 67 34 + - * 1
+  56
+infixToPostfix { { 2 + 4 }
+  
+infixToPostfix 2 + a
+  
+infixToPostfix 3 $ 3
+  
+infixToPostfix 4 * ( 2 + 4 - ( 2 + )  ) - 4 / 5
+  
+infixToPostfix 4 * ( 2 * + 4 - ( 2 + 2 ) ) - 4 / 5
+  
+infixToPostfix ( 3 + 5 - ( 4 + 2 ) }
+  
+infixToPostfix 3 + 4.2
+  
+infixToPostfix -
+  
+infixToPostfix @
   

@@ -20,5 +20,3 @@ postfixToInfix *
   invalid: too small
 postfixToInfix + 3 3
   invalid: too small
-postfixToInfix 3 3
-  
