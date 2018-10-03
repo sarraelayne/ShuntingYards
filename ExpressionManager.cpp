@@ -49,7 +49,8 @@ bool ExpressionManager::isPair(string a, string b) {
     }
 }
 string ExpressionManager::postfixToInfix(string postfixExpression) {
-    //Split string
+    stringstream ss;
+    ss << postfixExpression; 
     //check for digit
     //check for operator
     //append operators to postfix
@@ -64,6 +65,7 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
 string ExpressionManager::postfixEvaluate(string postfixExpression){
     int a;
     int b;
+    double c;
     int size;
     stringstream ss;
     ss << postfixExpression;
@@ -72,43 +74,39 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
         //check for operator
         if ((pfE == "+") || (pfE == "-") || (pfE == "*") || (pfE == "/") || (pfE == "%")) {
             if (evaluateStack.size() < 2) {
-                return "invalid";
+                return "invalid: too small";
             }
-            cout << "1";
             int a = evaluateStack.top();
-            cout << "2";
             evaluateStack.pop();
-            cout << "3";
             int b = evaluateStack.top();
-            cout << "4";
             evaluateStack.pop();
             switch (pfE[0]) {
             case '+':
-                evaluateStack.push(a + b);
+                evaluateStack.push(b + a);
                 break;
             case '-':
-                evaluateStack.push(a - b);
+                evaluateStack.push(b - a);
                 break;
             case '*':
-                evaluateStack.push(a * b);
+                evaluateStack.push(b * a);
                 break;
             case '/':
-                if (b == 0) {
-                    return "invalid";
+                if (a == 0) {
+                    return "invalid: div0";
                 }
-                evaluateStack.push(a / b);
+                evaluateStack.push(b / a);
                 break;
             case '%':
-                if (b == 0) {
-                    return "invalid";
+                if (a == 0) {
+                    return "invalid: mod0";
                 }
-                evaluateStack.push(a % b);
+                evaluateStack.push(b % a);
                 break;
             }
         }
         //check for numeric
         else if (isdigit(pfE[0])) {
-            int num;
+            double num;
             num = stoi(pfE);
             evaluateStack.push(num);
         }
@@ -117,12 +115,14 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
         }
     }
     if (evaluateStack.empty()) {
-        return "invalid";
+        return "invalid: empty";
     }
     
     return to_string(evaluateStack.top());
 }
 string ExpressionManager::infixToPostfix(string infixExpression){
+    stringstream ss;
+    ss << infixExpression; 
     return "";
 }
 

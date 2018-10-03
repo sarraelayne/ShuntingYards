@@ -73,7 +73,6 @@ void parse_instruction(std::string temp, std::ofstream &ofs, ExpressionManager* 
 		ofs << temp << "\n  " << expression << std::endl;
 	}
 	else if (command == "postfixEvaluate") { // command to return a pointer to a fighter (given the name of the fighter)
-		cout << "why" << endl;
 		expression = aptr->postfixEvaluate(ss.str().substr(16, std::string::npos));
 		ofs << temp << "\n  " << expression << std::endl;
 	}

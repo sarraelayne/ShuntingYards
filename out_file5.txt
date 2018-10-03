@@ -1,17 +1,17 @@
 postfixEvaluate - 1
-  invalid
+  invalid: too small
 postfixEvaluate + 1 3 4 -
-  invalid
+  invalid: too small
 postfixEvaluate + 1 3 -
-  invalid
+  invalid: too small
 postfixEvaluate +
-  invalid
+  invalid: too small
 postfixEvaluate + 3 4 - 1
-  invalid
+  invalid: too small
 postfixEvaluate 4 5 + 6 0 * /
-  0
+  invalid: div0
 postfixEvaluate } 78 97 + 6 / 5 +
-  5
+  34
 postfixToInfix 3 + 3 /
   
 postfixToInfix 3 3 4 +
