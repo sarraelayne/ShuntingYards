@@ -9,61 +9,78 @@
 using namespace std;
 	
 bool ExpressionManager::isBalanced(string expression) {
-    if (expression.length() <= 1) {
-        return false;
-    }
-    for (int i = 0; i < expression.length(); i++) { //creates stack
-        if (expression.at(i) == '('||expression.at(i) == '[' || expression.at(i) == '{') {
-            balancedStack.push(expression.at(i));
+    stringstream ss;
+    string myString;
+    stack<string> balancedStack;
+    ss << expression;
+    while (ss >> myString) {
+        if (myString == "(" || myString == "[" || myString == "{") {
+            balancedStack.push(myString);
         }
-        else if (expression.at(i) == ')'||expression.at(i) == ']' || expression.at(i) == '}') {
-            switch(expression.at(i)) {
-            case ')': 
-                x = balancedStack.top();
+        else if (myString == ")" || myString == "]" || myString == "}") {
+            if (balancedStack.empty()) {
+                return false;
+            }
+            if(isPair(balancedStack.top(), myString)){
                 balancedStack.pop();
-                if (x == '[' || x == '{') {
-                    return false;
-                }
-                break;
-            case ']':
-                x = balancedStack.top();
-                balancedStack.pop();
-                if (x == '(' || x == '{') {
-                    return false;
-                }
-                break;
-            case '}':
-                x = balancedStack.top();
-                balancedStack.pop();
-                if (x == '[' || x == '(') {
-                    return false;
-                }
-                break;
+            }
+            else {
+                return false;
             }
         }
     }
     if (!balancedStack.empty()) {
         return false;
     }
+    return true;
+}
+bool ExpressionManager::isPair(string a, string b) {
+    if (a == "(" && b == ")") {
+        return true;
+    }
+    else if (a == "[" && b == "]") {
+        return true;
+    }
+    else if (a == "{" && b == "}") {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 string ExpressionManager::postfixToInfix(string postfixExpression) {
-    return inExpression;
+    //Split string
+    //check for digit
+    //check for operator
+    //append operators to postfix
+    //test for valid postfix
+    /*
+    
+    
+    
+    */
+    return "";
 }	
 string ExpressionManager::postfixEvaluate(string postfixExpression){
-    //get input
-    vector<string> tokens; // everything into vector of strings
     int a;
     int b;
-    int size = tokens.size();
+    int size;
+    stringstream ss;
+    ss << postfixExpression;
     string pfE;
-    for (int i = 0; i < size; i++) {
-        //strings into int if digit
-        string pfE = tokens.at(i);
+    while (ss >> pfE) {
         //check for operator
         if ((pfE == "+") || (pfE == "-") || (pfE == "*") || (pfE == "/") || (pfE == "%")) {
+            if (evaluateStack.size() < 2) {
+                return "invalid";
+            }
+            cout << "1";
             int a = evaluateStack.top();
+            cout << "2";
             evaluateStack.pop();
+            cout << "3";
             int b = evaluateStack.top();
+            cout << "4";
             evaluateStack.pop();
             switch (pfE[0]) {
             case '+':
@@ -76,32 +93,37 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
                 evaluateStack.push(a * b);
                 break;
             case '/':
+                if (b == 0) {
+                    return "invalid";
+                }
                 evaluateStack.push(a / b);
                 break;
             case '%':
+                if (b == 0) {
+                    return "invalid";
+                }
                 evaluateStack.push(a % b);
                 break;
             }
         }
         //check for numeric
-        else if (!isdigit(pfE)) {
+        else if (isdigit(pfE[0])) {
             int num;
-            istringstream(pfE) >> num;
+            num = stoi(pfE);
             evaluateStack.push(num);
         }
-        //check for invalid
         else {
             cout << "invalid expression" << endl;
         }
     }
-        evalAns = balancedStack.top();
-        cout << "Ans: " << evalAns << endl;
-        balancedStack.pop();
+    if (evaluateStack.empty()) {
+        return "invalid";
+    }
     
-    return evalAns;
+    return to_string(evaluateStack.top());
 }
 string ExpressionManager::infixToPostfix(string infixExpression){
-    return newPostfix;
+    return "";
 }
 
 //telnet towel.blinkenlights.nl

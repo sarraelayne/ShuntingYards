@@ -11,14 +11,14 @@ class ExpressionManager: public ExpressionManagerInterface{
     ~ExpressionManager() {}
     
 	bool isBalanced(string expression);
+	bool isPair(string a, string b);
 	string postfixToInfix(string postfixExpression);
 	string postfixEvaluate(string postfixExpression);
 	string infixToPostfix(string infixExpression);
 	
 	protected:
-	stack<char> balancedStack;
-	char x;
 	stack<int> evaluateStack;
+	stack<char> ptoiStack;
 	string inExpression;
 	string evalAns;
 	string newPostfix;
