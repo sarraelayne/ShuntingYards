@@ -49,17 +49,37 @@ bool ExpressionManager::isPair(string a, string b) {
     }
 }
 string ExpressionManager::postfixToInfix(string postfixExpression) {
-    stringstream ss;
-    ss << postfixExpression; 
-    //check for digit
-    //check for operator
-    //append operators to postfix
-    //test for valid postfix
-    /*
+    istringstream iss(postfixExpression);
+    istream_iterator<string> beg(iss), end;
+    vector<string> pfVector(beg, end);
+    string postfixString = postfixExpression;
+    stack<string> operandStack;
+    int isDigitCheck;
     
-    
-    
-    */
+    for (int i = 0; i < postfixExpression.size(); i++) {
+        isDigitCheck = atoi(pfVector[i].c_str());
+        if (isdigit(isDigitCheck)) {
+            operandStack.push(pfVector[i]);
+        }
+        else if (pfVector[i] == "+" || pfVector[i] == "-" || pfVector[i] == "*" 
+            || pfVector[i] == "/" || pfVector[i] == "%") {
+            
+            if (operandStack.size() < 2) {
+                return "invalid: too small";
+            }
+            else {
+                string newString;
+                
+                string o1 = operandStack.top();
+                operandStack.pop();
+                string o2 = operandStack.top();
+                operandStack.pop();
+                newString = "(" + o2 + " " + pfVector[i] + " " + o1 + ")";
+                cout << "newString: " << newString << endl;
+                operandStack.push(newString);
+            }
+        }
+    }
     return "";
 }	
 string ExpressionManager::postfixEvaluate(string postfixExpression){
