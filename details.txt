@@ -1,42 +1,68 @@
 out_file1.txt
 out_file2.txt
 out_file3.txt
-  ( ( ( ( 3 + 4 ) * ( 3 - 2 ) ) - ( 2 / 2 ) ) + ( 24 / 3 ) )  |	  invalid: not valid postfix string
-  ( ( 40 * ( ( 2 + 4 ) - ( 1 + 1 ) ) ) - ( ( 4 / 5 ) / 6 ) )  |	  invalid: not valid postfix string
-  ( 5 - ( 5 - ( 5 - ( 5 - ( 5 - ( 5 - 5 ) ) ) ) ) )	      |	  invalid: not valid postfix string
-  ( 3 + 3 )						      |	  invalid: not valid postfix string
-  ( ( ( 3 % 8 ) % ( 3 % 8 ) ) % ( ( 3 % 8 ) % ( 3 % 8 ) ) )   |	  invalid: not valid postfix string
-  ( ( ( ( ( ( ( ( ( ( ( 42 + ( 42 * 42 ) ) - ( 42 / 42 ) ) %  |	  invalid: not valid postfix string
+postfixToInfix 3 4 + 3 2 - * 2 2 / - 24 3 / +		      <
+  ( ( ( ( 3 + 4 ) * ( 3 - 2 ) ) - ( 2 / 2 ) ) + ( 24 / 3 ) )  <
+postfixToInfix 40 2 4 + 1 1 + - * 4 5 / 6 / -		      <
+  ( ( 40 * ( ( 2 + 4 ) - ( 1 + 1 ) ) ) - ( ( 4 / 5 ) / 6 ) )  <
+postfixToInfix 5 5 5 5 5 5 5 - - - - - -		      <
+  ( 5 - ( 5 - ( 5 - ( 5 - ( 5 - ( 5 - 5 ) ) ) ) ) )	      <
+postfixToInfix 3 3 +					      <
+  ( 3 + 3 )						      <
+postfixToInfix 3 8 % 3 8 % % 3 8 % 3 8 % % %		      <
+  ( ( ( 3 % 8 ) % ( 3 % 8 ) ) % ( ( 3 % 8 ) % ( 3 % 8 ) ) )   <
+postfixToInfix 42 42 42 * + 42 42 / - 42 % 42 42 * 42 - 42 /  <
+  ( ( ( ( ( ( ( ( ( ( ( 42 + ( 42 * 42 ) ) - ( 42 / 42 ) ) %  <
 out_file4.txt
-  40 2 4 + 2 2 + - * 4 5 / 6 / -			      |	  
-  3 2 + 13 + 4 /					      |	  
-  43 2 19 * +						      |	  
-  3 4 + 3 2 - * 2 2 / - 24 3 / +			      |	  
-  3 5 6 * + 8 -						      |	  
-  48 36 7 % + 2 -					      |	  
-  0 1 2 3 4 5 6 7 8 9 + - + - + - + - +			      |	  
+infixToPostfix 40 * ( 2 + 4 - ( 2 + 2 ) ) - 4 / 5 / 6	      <
+  40 2 4 + 2 2 + - * 4 5 / 6 / -			      <
+infixToPostfix ( 3 + 2 + 13 ) / 4			      <
+  3 2 + 13 + 4 /					      <
+infixToPostfix 43 + 2 * 19				      <
+  43 2 19 * +						      <
+infixToPostfix ( ( 3 + 4 ) * ( 3 - 2 ) - ( 2 / 2 ) ) + 24 / 3 <
+  3 4 + 3 2 - * 2 2 / - 24 3 / +			      <
+infixToPostfix 3 + 5 * 6 - 8				      <
+  3 5 6 * + 8 -						      <
+infixToPostfix 48 + 36 % 7 - 2				      <
+  48 36 7 % + 2 -					      <
+infixToPostfix ( 0 + ( 1 - ( 2 + ( 3 - ( 4 + ( 5 - ( 6 + ( 7  <
+  0 1 2 3 4 5 6 7 8 9 + - + - + - + - +			      <
 out_file5.txt
-  invalid						      |	  invalid: too small
-  invalid						      |	  invalid: too small
-  invalid						      |	  invalid: too small
-  invalid						      |	  invalid: too small
-  invalid						      |	  invalid: too small
+  invalid						      |	  invalid: too small to eval
+  invalid						      |	  invalid: too small to eval
+  invalid						      |	  invalid: too small to eval
+  invalid						      |	  invalid: too small to eval
+  invalid						      |	  invalid: too small to eval
   invalid						      |	  invalid: div0
   invalid						      |	  34
-  invalid						      |	  invalid: not valid postfix string
-  invalid						      |	  invalid: not valid postfix string
-  invalid						      |	  invalid: too small
-  invalid						      |	  invalid: too small
-  invalid						      |	  invalid: not valid postfix string
-  invalid						      |	  invalid: not valid postfix string
-  invalid						      |	  invalid: not valid postfix string
-  invalid						      |	  56
-  invalid						      |	  
-  invalid						      |	  
-  invalid						      |	  
-  invalid						      |	  
-  invalid						      |	  
-  invalid						      |	  
-  invalid						      |	  
-  invalid						      |	  
-  invalid						      |	  
+  invalid						      |	  invalid: too small to convert
+  invalid						      |	  invalid: too small to convert
+  invalid						      |	  invalid: too small to convert
+  invalid						      |	  invalid: too small to convert
+postfixToInfix 3 3					      <
+  invalid						      <
+postfixToInfix five plus three				      <
+  invalid						      <
+postfixToInfix 4.3 2 +					      <
+  invalid						      <
+postfixToInfix 56 67 34 + - * 1				      <
+  invalid						      <
+infixToPostfix { { 2 + 4 }				      <
+  invalid						      <
+infixToPostfix 2 + a					      <
+  invalid						      <
+infixToPostfix 3 $ 3					      <
+  invalid						      <
+infixToPostfix 4 * ( 2 + 4 - ( 2 + )  ) - 4 / 5		      <
+  invalid						      <
+infixToPostfix 4 * ( 2 * + 4 - ( 2 + 2 ) ) - 4 / 5	      <
+  invalid						      <
+infixToPostfix ( 3 + 5 - ( 4 + 2 ) }			      <
+  invalid						      <
+infixToPostfix 3 + 4.2					      <
+  invalid						      <
+infixToPostfix -					      <
+  invalid						      <
+infixToPostfix @					      <
+  invalid						      <

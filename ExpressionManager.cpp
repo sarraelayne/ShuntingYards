@@ -54,12 +54,9 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
     vector<string> pfVector(beg, end);
     string postfixString = postfixExpression;
     stack<string> operandStack;
-    int isDigitCheck;
     
     for (int i = 0; i < postfixExpression.size(); i++) {
-        cout << "isDigitCheck: " << isDigitCheck << endl;
-        if (isdigit(isDigitCheck)) {
-            cout << "isDigitCheck2: " << isDigitCheck << endl;
+        if (isdigit(postfixString[0])) {
             cout << "Pushing: " << pfVector[i] << endl;
             operandStack.push(pfVector[i]);
         }
@@ -156,7 +153,7 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
     int opPrecedence;
     int topPrecedence;
     if (operatorStack.empty() || top == "(" || op == "(") {
-        operatorStack(currOp);
+        operatorStack.push(currOp);
         return true;
     }
     else if (currOp == ")") {
@@ -201,7 +198,7 @@ string ExpressionManager::infixToPostfix(string infixExpression){
                 return "error: false operator";
             }
         }
-        else if (isdigit(token)) {
+        else if (isdigit(token[0])) {
             postfixString.append(token);
             postfixString.append(" ");
         }
