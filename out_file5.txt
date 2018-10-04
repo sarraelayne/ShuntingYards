@@ -15,8 +15,34 @@ postfixEvaluate } 78 97 + 6 / 5 +
 postfixToInfix 3 + 3 /
   invalid: too small to convert
 postfixToInfix 3 3 4 +
-  invalid: too small to convert
+  invalid: not valid postfix string
 postfixToInfix *
   invalid: too small to convert
 postfixToInfix + 3 3
   invalid: too small to convert
+postfixToInfix 3 3
+  invalid: not valid postfix string
+postfixToInfix five plus three
+  invalid: not valid postfix string
+postfixToInfix 4.3 2 +
+  ( 4.3 + 2 )
+postfixToInfix 56 67 34 + - * 1
+  invalid: too small to convert
+infixToPostfix { { 2 + 4 }
+  string syntax error
+infixToPostfix 2 + a
+  error: false operator
+infixToPostfix 3 $ 3
+  string syntax error
+infixToPostfix 4 * ( 2 + 4 - ( 2 + )  ) - 4 / 5
+  error: false operator
+infixToPostfix 4 * ( 2 * + 4 - ( 2 + 2 ) ) - 4 / 5
+  error: false operator
+infixToPostfix ( 3 + 5 - ( 4 + 2 ) }
+  string syntax error
+infixToPostfix 3 + 4.2
+  error: false operator
+infixToPostfix -
+  error: false operator
+infixToPostfix @
+  string syntax error

@@ -146,16 +146,24 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
     return to_string(evaluateStack.top());
 }
 bool ExpressionManager::process_operator(stack<string> &operatorStack, string &postfixString, string &op) {
-    string top = operatorStack.top();
     string currOp = op;
     int opPrecedence;
     int topPrecedence;
     cout << "in process_operator" << endl;
-    if (operatorStack.empty() || top == "(" || op == "(") {
-        operatorStack.push(currOp);
-        return true;
+    if (!operatorStack.empty()) {
+        cout << "empty check" << endl;
+        if (operatorStack.top() == "(") {
+            cout << "top check" << endl;
+            if (op == "(") {
+                cout << "push" << endl;
+                operatorStack.push(currOp);
+                return true;
+            }
+        }
     }
-    else if (currOp == ")") {
+    else if (currOp == ")" || currOp == "]" || currOp == "}") {
+        cout << "curr op if" << endl;
+        string top = operatorStack.top();
         while(operatorStack.top() != "(") {
             top = operatorStack.top();
             postfixString.append(top);
@@ -168,24 +176,34 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
         return true;
     }
     else {
+        cout << "precedence else" << endl;
         if (currOp == "*" || currOp == "/" || currOp == "%") {
+            cout << "curr * / %" << endl;
             opPrecedence = 2;
         }
-        else if (currOp == "+" || currOp == "-") {
+        cout << "is it here 1" << endl;
+        if (currOp == "+" || currOp == "-") {
+            cout << "curr + -" << endl;
             opPrecedence = 1;
         }
-        else if (operatorStack.top() == "*" ||operatorStack.top() == "/" || operatorStack.top() == "%") {
+        cout << "is it here 2" << endl;
+        cout << operatorStack.size() << endl;
+        if (operatorStack.top() == "*" || operatorStack.top() == "/" || operatorStack.top() == "%") {
+            cout << "top * / % " << endl;
+            operatorStack.pop();
             topPrecedence = 2;
         }
-        else if (operatorStack.top() == "+" ||operatorStack.top() == "-") {
+        cout << "is it here 3" << endl;
+        if (operatorStack.top() == "+" ||operatorStack.top() == "-") {
+            cout << "top + - if" << endl;
+            operatorStack.pop();
             topPrecedence = 1;
         }
-        else {
-            opPrecedence = 0;
-        }
+        cout << "before while" << endl;
         while (opPrecedence <= topPrecedence) {
             postfixString.append(operatorStack.top());
         }
+        return true;
     }
 }
 string ExpressionManager::infixToPostfix(string infixExpression){
@@ -198,6 +216,7 @@ string ExpressionManager::infixToPostfix(string infixExpression){
     
     while (getline(ss, token, ' ')) {
         if((token == "+") || (token == "-") || (token == "*") || (token == "/") || (token == "%")) {
+            operatorStack.push(token);
             cout << "in token operators if" << endl;
             if (process_operator(operatorStack, postfixString, op) == false) { //DEFINITELY SOMETHING IN HERE
                 return "error: false operator";
@@ -206,10 +225,12 @@ string ExpressionManager::infixToPostfix(string infixExpression){
         else if (isdigit(token[0])) {
             postfixString.append(token);
             postfixString.append(" ");
-            cout << "string: " << postfixString << endl;
         }
         else {
             return "string syntax error";
+        }
+        if (!operatorStack.empty()) {
+        cout << "top: " << operatorStack.top() << endl;
         }
     }
     while (!operatorStack.empty()) {
