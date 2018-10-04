@@ -48,9 +48,6 @@ bool ExpressionManager::isPair(string a, string b) {
         return false;
     }
 }
-/*bool ExpressionManager::process_operator(stack<string> &operandStack, string &postfixString, string &) {
-    
-}*/
 string ExpressionManager::postfixToInfix(string postfixExpression) {
     istringstream iss(postfixExpression);
     istream_iterator<string> beg(iss), end;
@@ -71,7 +68,7 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
             || pfVector[i] == "/" || pfVector[i] == "%") {
             cout << "size: " << operandStack.size() << endl;
             if (operandStack.size() < 2) {
-                return "invalid: too small";
+                return "invalid: too small to convert";
             }
             else {
                 string newString;
@@ -107,7 +104,7 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
         //check for operator
         if ((pfE == "+") || (pfE == "-") || (pfE == "*") || (pfE == "/") || (pfE == "%")) {
             if (evaluateStack.size() < 2) {
-                return "invalid: too small";
+                return "invalid: too small to eval";
             }
             int a = evaluateStack.top();
             evaluateStack.pop();
@@ -153,10 +150,46 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
     
     return to_string(evaluateStack.top());
 }
+/*bool ExpressionManager::process_operator(stack<string> &operandStack, string &postfixString, string &) {
+    
+}*/
 string ExpressionManager::infixToPostfix(string infixExpression){
-    stringstream ss;
-    ss << infixExpression; 
-    return "";
+    stringstream ss(infixExpression);
+    string token;
+    string postfixString;
+    string op;
+    vector<string> tokens;
+    stack<string> operatorStack;
+    
+    while (getline(ss, token, ' ')) {
+        
+        if(token == "+") || (token == "-") || (token == "*") || (token == "/") || (token == "%")) {
+            process_operator(operatorStack, postfixString, op);
+            if (process_operator == false) {
+                return "error: false operator";
+            }
+        }
+        else if (isdigit(token)) {
+            postfixString.append(token);
+            postfixString.append(" ");
+        }
+        else {
+            return "string syntax error";
+        }
+    }
+    while (!operatorStack.empty()) {
+        op = operatorStack.top();
+        operatorStack.pop();
+        postfixString.append(op);
+        postfixString.append(" ");
+    }
+    postfixEvaluate(string postfixString);
+    if (postfixEvaluate() == true) {
+        return postfixString;
+    }
+    else {
+        return "syntax error: not valid";
+    }
 }
 
 //telnet towel.blinkenlights.nl
