@@ -150,9 +150,42 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
     
     return to_string(evaluateStack.top());
 }
-/*bool ExpressionManager::process_operator(stack<string> &operandStack, string &postfixString, string &) {
+bool ExpressionManager::process_operator(stack<string> &operatorStack, string &postfixString, string &op) {
+    string top = operatorStack.top();
+    string currOp = op;
+    int opPrecedence;
     
-}*/
+    if (operatorStack.empty() || top == "(" || op == "(") {
+        operatorStack(currOp);
+        return true;
+    }
+    else if (currOp == ")") {
+        while(operatorStack.top != "(") {
+            top = operatorStack.top();
+            postfixString.append(top);
+            if(operatorStack.empty) {
+                return false;
+            }
+            operatorStack.pop();
+        }
+        operatorStack.pop();
+        return true;
+    }
+    else {
+        if (operatorStack.top == "*" ||operatorStack.top == "/" || operatorStack.top == "%") {
+            opPrecedence = 2;
+        }
+        else if (operatorStack.top == "+" ||operatorStack.top == "-") {
+            opPrecedence = 1;
+        }
+        else {
+            opPrecedence = 0;
+        }
+        while (opPrecedence <= topPrecedence) {
+            postfixString.append(operatorStack.top());
+        }
+    }
+}
 string ExpressionManager::infixToPostfix(string infixExpression){
     stringstream ss(infixExpression);
     string token;
