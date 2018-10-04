@@ -57,7 +57,6 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
     int isDigitCheck;
     
     for (int i = 0; i < postfixExpression.size(); i++) {
-        isDigitCheck = atoi(pfVector[i].c_str());
         cout << "isDigitCheck: " << isDigitCheck << endl;
         if (isdigit(isDigitCheck)) {
             cout << "isDigitCheck2: " << isDigitCheck << endl;
@@ -154,7 +153,7 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
     string top = operatorStack.top();
     string currOp = op;
     int opPrecedence;
-    
+    int topPrecedence;
     if (operatorStack.empty() || top == "(" || op == "(") {
         operatorStack(currOp);
         return true;
@@ -196,7 +195,7 @@ string ExpressionManager::infixToPostfix(string infixExpression){
     
     while (getline(ss, token, ' ')) {
         
-        if(token == "+") || (token == "-") || (token == "*") || (token == "/") || (token == "%")) {
+        if((token == "+") || (token == "-") || (token == "*") || (token == "/") || (token == "%")) {
             process_operator(operatorStack, postfixString, op);
             if (process_operator == false) {
                 return "error: false operator";

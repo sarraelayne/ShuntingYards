@@ -12,13 +12,13 @@ class ExpressionManager: public ExpressionManagerInterface{
     
 	bool isBalanced(string expression);
 	bool isPair(string a, string b);
+	bool process_operator(stack<string> &operatorStack, string &postfixString, string &op);
 	string postfixToInfix(string postfixExpression);
 	string postfixEvaluate(string postfixExpression);
 	string infixToPostfix(string infixExpression);
 	
 	protected:
 	stack<int> evaluateStack;
-	stack<char> ptoiStack;
 	string inExpression;
 	string evalAns;
 	string newPostfix;
