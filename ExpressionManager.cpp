@@ -54,10 +54,11 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
     vector<string> pfVector(beg, end);
     string postfixString = postfixExpression;
     stack<string> operandStack;
+    string isDigitCheck;
     
     for (int i = 0; i < postfixExpression.size(); i++) {
-        if (isdigit(postfixString[0])) {
-            cout << "Pushing: " << pfVector[i] << endl;
+        isDigitCheck = pfVector[i];
+        if (isdigit(isDigitCheck[0])) {
             operandStack.push(pfVector[i]);
         }
         else if (pfVector[i] == "+" || pfVector[i] == "-" || pfVector[i] == "*" 
