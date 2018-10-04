@@ -151,7 +151,7 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
     int topPrecedence;
     cout << "in process_operator" << endl;
     if (!operatorStack.empty()) {
-        cout << "empty check" << endl;
+        cout << "empty check" << endl; /////////ERROR HERE
         if (operatorStack.top() == "(") {
             cout << "top check" << endl;
             if (op == "(") {
