@@ -99,6 +99,7 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
     stringstream ss;
     ss << postfixExpression;
     string pfE;
+    isValid = false;
     while (ss >> pfE) {
         //check for operator
         if ((pfE == "+") || (pfE == "-") || (pfE == "*") || (pfE == "/") || (pfE == "%")) {
@@ -138,6 +139,7 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
             double num;
             num = stoi(pfE);
             evaluateStack.push(num);
+            isValid = true;
         }
         else {
             cout << "invalid expression" << endl;
@@ -146,7 +148,6 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
     if (evaluateStack.empty()) {
         return "invalid: empty";
     }
-    
     return to_string(evaluateStack.top());
 }
 bool ExpressionManager::process_operator(stack<string> &operatorStack, string &postfixString, string &op) {
@@ -159,10 +160,10 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
         return true;
     }
     else if (currOp == ")") {
-        while(operatorStack.top != "(") {
+        while(operatorStack.top() != "(") {
             top = operatorStack.top();
             postfixString.append(top);
-            if(operatorStack.empty) {
+            if(operatorStack.empty()) {
                 return false;
             }
             operatorStack.pop();
@@ -171,10 +172,10 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
         return true;
     }
     else {
-        if (operatorStack.top == "*" ||operatorStack.top == "/" || operatorStack.top == "%") {
+        if (operatorStack.top() == "*" ||operatorStack.top() == "/" || operatorStack.top() == "%") {
             opPrecedence = 2;
         }
-        else if (operatorStack.top == "+" ||operatorStack.top == "-") {
+        else if (operatorStack.top() == "+" ||operatorStack.top() == "-") {
             opPrecedence = 1;
         }
         else {
@@ -196,8 +197,7 @@ string ExpressionManager::infixToPostfix(string infixExpression){
     while (getline(ss, token, ' ')) {
         
         if((token == "+") || (token == "-") || (token == "*") || (token == "/") || (token == "%")) {
-            process_operator(operatorStack, postfixString, op);
-            if (process_operator == false) {
+            if (process_operator(operatorStack, postfixString, op) == false) {
                 return "error: false operator";
             }
         }
@@ -215,8 +215,8 @@ string ExpressionManager::infixToPostfix(string infixExpression){
         postfixString.append(op);
         postfixString.append(" ");
     }
-    postfixEvaluate(string postfixString);
-    if (postfixEvaluate() == true) {
+    if (isValid == true) {
+        cout << "IsValid: " << isValid << endl;
         return postfixString;
     }
     else {

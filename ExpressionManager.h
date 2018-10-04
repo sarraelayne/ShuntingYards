@@ -19,6 +19,7 @@ class ExpressionManager: public ExpressionManagerInterface{
 	
 	protected:
 	stack<int> evaluateStack;
+	bool isValid;
 	string inExpression;
 	string evalAns;
 	string newPostfix;
