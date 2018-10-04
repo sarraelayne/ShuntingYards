@@ -78,7 +78,9 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
                 cout << "newString: " << newString << endl;
                 operandStack.push(newString);
             }
+            cout << "weird" << endl;
         }
+        cout << ";as;dkjfsdllffj" << endl;
     }
     cout << "top: " << operandStack.top() << endl;
     if (operandStack.size() == 1) {
