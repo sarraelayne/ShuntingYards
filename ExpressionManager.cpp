@@ -204,6 +204,9 @@ string ExpressionManager::infixToPostfix(string infixExpression){
 	stack<string> pfStack;
 	string tempstr;
 	stringstream temp;
+	if (!isBalanced(infixExpression)) {
+			return "invalid";
+	}
 	for (int i = 0; i < tt.str().length(); i++) {
 			if (tt.str()[i] == '.') {
 				return "invalid";
@@ -214,8 +217,8 @@ string ExpressionManager::infixToPostfix(string infixExpression){
 		}
 	temp << infixExpression;
 	while (temp >> tempstr) {
-		if (isOperator(tempstr) == false && isOpen(tempstr) == false && isInteger(tempstr) == false &&
-				isClosed(tempstr) == false) {
+		if (isOperator(tempstr) == false && isOpen(tempstr) == false && isInteger(tempstr) == false && isClosed(tempstr) == false) {
+		    return "invalid";
 		}
 	}
 	string previous;

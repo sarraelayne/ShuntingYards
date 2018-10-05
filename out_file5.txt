@@ -29,17 +29,17 @@ postfixToInfix 4.3 2 +
 postfixToInfix 56 67 34 + - * 1
   invalid
 infixToPostfix { { 2 + 4 }
-  2 4 + {
+  invalid
 infixToPostfix 2 + a
-  2 +
+  invalid
 infixToPostfix 3 $ 3
-  3 3 
+  invalid
 infixToPostfix 4 * ( 2 + 4 - ( 2 + )  ) - 4 / 5
   invalid
 infixToPostfix 4 * ( 2 * + 4 - ( 2 + 2 ) ) - 4 / 5
   invalid
 infixToPostfix ( 3 + 5 - ( 4 + 2 ) }
-  3 5 + 4 2 + - 
+  invalid
 infixToPostfix 3 + 4.2
   invalid
 infixToPostfix -
