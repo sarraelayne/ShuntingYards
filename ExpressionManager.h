@@ -15,7 +15,12 @@ class ExpressionManager: public ExpressionManagerInterface{
 	bool process_operator(stack<string> &operatorStack, string &postfixString, string &op);
 	string postfixToInfix(string postfixExpression);
 	string postfixEvaluate(string postfixExpression);
-	string infixToPostfix(string infixExpression);
+	int getPrecedence(string next_thing);
+	bool isOpen(string next_thing);
+    bool isClosed(string next_thing);
+    bool isInteger(string next_thing);
+    bool isOperator(string next_thing);
+    string infixToPostfix(string infixExpression);
 	
 	protected:
 	stack<int> evaluateStack;

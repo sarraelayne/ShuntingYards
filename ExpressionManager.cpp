@@ -59,12 +59,18 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
     for (int i = 0; i < pfVector.size(); i++) {
         isDigitCheck = pfVector[i];
         if (isdigit(isDigitCheck[0])) {
-            operandStack.push(pfVector[i]);
+            if(isDigitCheck[1] == '.') {
+                return "invalid";
+            }
+            else {
+                operandStack.push(pfVector[i]);
+            }
+            
         }
         else if (pfVector[i] == "+" || pfVector[i] == "-" || pfVector[i] == "*" 
             || pfVector[i] == "/" || pfVector[i] == "%") {
             if (operandStack.size() < 2) {
-                return "invalid: too small to convert";
+                return "invalid";
             }
             else {
                 string newString;
@@ -83,7 +89,7 @@ string ExpressionManager::postfixToInfix(string postfixExpression) {
         return postfixString;
     }
     else {
-        return "invalid: not valid postfix string";
+        return "invalid";
     }
 }	
 string ExpressionManager::postfixEvaluate(string postfixExpression){
@@ -96,10 +102,13 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
     string pfE;
     isValid = false;
     while (ss >> pfE) {
+        if (pfE == ")" || pfE == "]" || pfE == "}") {
+            return "invalid";
+        }
         //check for operator
         if ((pfE == "+") || (pfE == "-") || (pfE == "*") || (pfE == "/") || (pfE == "%")) {
             if (evaluateStack.size() < 2) {
-                return "invalid: too small to eval";
+                return "invalid";
             }
             int a = evaluateStack.top();
             evaluateStack.pop();
@@ -117,13 +126,13 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
                 break;
             case '/':
                 if (a == 0) {
-                    return "invalid: div0";
+                    return "invalid";
                 }
                 evaluateStack.push(b / a);
                 break;
             case '%':
                 if (a == 0) {
-                    return "invalid: mod0";
+                    return "invalid";
                 }
                 evaluateStack.push(b % a);
                 break;
@@ -137,120 +146,145 @@ string ExpressionManager::postfixEvaluate(string postfixExpression){
             isValid = true;
         }
         else {
-            cout << "invalid expression" << endl;
+            cout << "invalid" << endl;
         }
     }
     if (evaluateStack.empty()) {
-        return "invalid: empty";
+        return "invalid";
     }
     return to_string(evaluateStack.top());
 }
-bool ExpressionManager::process_operator(stack<string> &operatorStack, string &postfixString, string &op) {
-    string currOp = op;
-    int opPrecedence;
-    int topPrecedence;
-    cout << "in process_operator" << endl;
-    if (!operatorStack.empty()) {
-        cout << "empty check" << operatorStack.top() << endl;
-        if (operatorStack.top() == "(" || operatorStack.top() == "[" || operatorStack.top() == "{") {
-            cout << "top check" << endl;
-            if (op == "(" || op == "[" || op == "{") {
-                cout << "push" << endl;
-                operatorStack.push(currOp);
-                return true;
-            }
-        }
-    }
-    if (currOp == ")" || currOp == "]" || currOp == "}") {
-        cout << "curr op if" << endl;
-        string top = operatorStack.top();
-        while(operatorStack.top() != "(") {
-            top = operatorStack.top();
-            postfixString.append(top);
-            if(operatorStack.empty()) {
-                return false;
-            }
-            operatorStack.pop();
-        }
-        operatorStack.pop();
+bool ExpressionManager::isOpen(string nextToken) {
+    if (nextToken == "(" || nextToken == "{" || nextToken == "[") {
         return true;
     }
     else {
-        if (operatorStack.empty()){
-            cout << "why do you hate me" << endl;
-        }
-        cout << "precedence else" << endl;
-        if (currOp == "*" || currOp == "/" || currOp == "%") {
-            cout << "curr * / %" << endl;
-            opPrecedence = 2;
-        }
-        cout << "is it here 1" << endl;
-        if (currOp == "+" || currOp == "-") {
-            cout << "curr + -" << endl;
-            opPrecedence = 1;
-        }
-        cout << "is it here 2" << endl;
-        cout << operatorStack.size() << endl;
-        if (operatorStack.top() == "*" || operatorStack.top() == "/" || operatorStack.top() == "%") {
-            cout << "top * / % " << endl;
-            operatorStack.pop();
-            topPrecedence = 2;
-        }
-        cout << "is it here 3" << endl;
-        if (operatorStack.top() == "+" || operatorStack.top() == "-") {
-            cout << "top + - if" << endl;
-            operatorStack.pop();
-            topPrecedence = 1;
-        }
-        cout << "before while" << endl;
-        while (opPrecedence <= topPrecedence) {
-            postfixString.append(operatorStack.top());
-            cout << "PfString: " << postfixString << endl;
-        }
-        return true;
+        return false;
     }
 }
+
+bool ExpressionManager::isClosed(string nextToken) {
+	if (nextToken == ")" || nextToken == "}" || nextToken == "]") {
+	    return true;
+	}
+	else {
+	    return false;
+	}
+}
+
+bool ExpressionManager::isInteger(string nextToken) {
+	stringstream isint;
+	int num;
+	isint << nextToken;
+    isint >> num;
+	return num;
+}
+
+bool ExpressionManager::isOperator(string nextToken) {
+    if (nextToken == "*" || nextToken == "/" || nextToken == "%" || nextToken == "+" || nextToken == "-") {
+        return true;
+    }
+	else {
+	    return false;
+	}
+}
+int ExpressionManager::getPrecedence(string nextToken) {
+	int precedence = 0;
+	if (nextToken == "*" || nextToken == "/" || nextToken == "%") {
+		precedence = 3;
+	} else if (nextToken == "+" || nextToken == "-") {
+		precedence = 2;
+	} else if (nextToken == "(" || nextToken == ")" || nextToken == "{" || nextToken == "}" || nextToken == "[" || nextToken == "]") {
+		precedence = 1;
+	}
+	return precedence;
+}
 string ExpressionManager::infixToPostfix(string infixExpression){
-    stringstream ss(infixExpression);
-    string token;
-    string postfixString;
-    string op;
-    vector<string> tokens;
-    stack<string> operatorStack;
-    
-    while (getline(ss, token, ' ')) {
-        if((token == "+") || (token == "-") || (token == "*") || (token == "/") || (token == "%")) {
-            operatorStack.push(token);
-            cout << "OS top: " << operatorStack.top() << endl;
-            cout << "in token operators if" << endl;
-            if (process_operator(operatorStack, postfixString, op) == false) { //DEFINITELY SOMETHING IN HERE
-                return "error: false operator";
-            }
-        }
-        else if (isdigit(token[0])) {
-            postfixString.append(token);
-            postfixString.append(" ");
-        }
-        else {
-            return "string syntax error";
-        }
-        if (!operatorStack.empty()) {
-        cout << "top: " << operatorStack.top() << endl;
-        }
-    }
-    while (!operatorStack.empty()) {
-        op = operatorStack.top();
-        operatorStack.pop();
-        postfixString.append(op);
-        postfixString.append(" ");
-    }
-    if (isValid == true) {
-        cout << "IsValid: " << isValid << endl;
-        return postfixString;
-    }
-    else {
-        return "syntax error: not valid";
-    }
+	stringstream tt(infixExpression);
+	stack<string> pfStack;
+	string tempstr;
+	stringstream temp;
+	for (int i = 0; i < tt.str().length(); i++) {
+			if (tt.str()[i] == '.') {
+				return "invalid";
+			}
+			if (tt.str().length() == 1) {
+				return "invalid";
+			}
+		}
+	temp << infixExpression;
+	while (temp >> tempstr) {
+		if (isOperator(tempstr) == false && isOpen(tempstr) == false && isInteger(tempstr) == false &&
+				isClosed(tempstr) == false) {
+		}
+	}
+	string previous;
+	string nextToken;
+	string pfString;
+	stringstream pf;
+	pf << infixExpression;
+	while (pf >> nextToken) {
+		if (isOperator(previous) && isOperator(nextToken)) {
+					return "invalid";
+				}
+		if (isOperator(previous) && isClosed(nextToken)) {
+					return "invalid";
+				}
+		if (isInteger(nextToken)) {
+			pfString.append(nextToken);
+			pfString.append(" ");
+		} else if (isOperator(nextToken) || isOpen(nextToken) || isClosed(nextToken)) {
+				if (nextToken == "(" || nextToken == "{" || nextToken == "[") {
+					pfStack.push(nextToken);
+				}
+				else if (pfStack.empty()) {
+					pfStack.push(nextToken);
+				}
+				else if (getPrecedence(nextToken) == 3 && getPrecedence(pfStack.top()) != 3) {
+					pfStack.push(nextToken);
+				}
+				else if (getPrecedence(nextToken) == getPrecedence(pfStack.top())) {
+					if (pfStack.top() != "(" && pfStack.top() != "[" && pfStack.top() != "{" && pfStack.top() != ")" && pfStack.top() != "]" && pfStack.top() != "}") {
+						pfString.append(pfStack.top());
+						pfString.append(" ");
+					}
+					pfStack.pop();
+					pfStack.push(nextToken);
+				}
+				else if (getPrecedence(nextToken) == 2 && getPrecedence(pfStack.top()) == 3) {
+					if (pfStack.top() != "(" && pfStack.top() != "[" && pfStack.top() != "{" && pfStack.top() != ")" && pfStack.top() != "]" && pfStack.top() != "}") {
+					pfString.append(pfStack.top());
+					pfString.append(" ");
+					}
+					pfStack.pop();
+					pfStack.push(nextToken);
+				}
+				else if (getPrecedence(nextToken) == 2 && getPrecedence(pfStack.top()) == 1) {
+					pfStack.push(nextToken);
+				}
+				else if (nextToken == ")" || nextToken == "]" || nextToken == "}") {
+					while (pfStack.top() != "(" && pfStack.top() != "{" && pfStack.top() != "[") {
+					    if (pfStack.top() != "(" && pfStack.top() != "[" && pfStack.top() != "{" && pfStack.top() != ")" && pfStack.top() != "]" && pfStack.top() != "}") {
+    						pfString.append(pfStack.top());
+						    pfString.append(" ");
+					    }
+					    pfStack.pop();
+					  }
+					if (pfStack.top() == "(" || pfStack.top() == "{" || pfStack.top() == "[") {
+						pfStack.pop();
+					}
+				}
+		}
+		previous = nextToken;
+	}
+	while (pfStack.size() != 0) {
+		pfString.append(pfStack.top());
+		if (pfStack.size() != 1) {
+			pfString.append(" ");
+		}
+		pfStack.pop();
+	}
+	return pfString;
 }
 
 //telnet towel.blinkenlights.nl

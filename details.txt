@@ -2,35 +2,11 @@ out_file1.txt
 out_file2.txt
 out_file3.txt
 out_file4.txt
-  40 2 4 + 2 2 + - * 4 5 / 6 / -			      |	  error: false operator
-  3 2 + 13 + 4 /					      |	  string syntax error
-  43 2 19 * +						      |	  error: false operator
-  3 4 + 3 2 - * 2 2 / - 24 3 / +			      |	  string syntax error
-  3 5 6 * + 8 -						      |	  error: false operator
-  48 36 7 % + 2 -					      |	  error: false operator
-  0 1 2 3 4 5 6 7 8 9 + - + - + - + - +			      |	  string syntax error
+  3 5 6 * + 8 -						      |	  3 5 6 * 8 - +
+  48 36 7 % + 2 -					      |	  48 36 7 % 2 - +
+  0 1 2 3 4 5 6 7 8 9 + - + - + - + - +			      |	  1 2 3 4 5 6 7 8 9 + - + - + - + - + 
 out_file5.txt
-  invalid						      |	  invalid: too small to eval
-  invalid						      |	  invalid: too small to eval
-  invalid						      |	  invalid: too small to eval
-  invalid						      |	  invalid: too small to eval
-  invalid						      |	  invalid: too small to eval
-  invalid						      |	  invalid: div0
-  invalid						      |	  34
-  invalid						      |	  invalid: too small to convert
-  invalid						      |	  invalid: not valid postfix string
-  invalid						      |	  invalid: too small to convert
-  invalid						      |	  invalid: too small to convert
-  invalid						      |	  invalid: not valid postfix string
-  invalid						      |	  invalid: not valid postfix string
-  invalid						      |	  ( 4.3 + 2 )
-  invalid						      |	  invalid: too small to convert
-  invalid						      |	  string syntax error
-  invalid						      |	  error: false operator
-  invalid						      |	  string syntax error
-  invalid						      |	  error: false operator
-  invalid						      |	  error: false operator
-  invalid						      |	  string syntax error
-  invalid						      |	  error: false operator
-  invalid						      |	  error: false operator
-  invalid						      |	  string syntax error
+  invalid						      |	  2 4 + {
+  invalid						      |	  2 +
+  invalid						      |	  3 3 
+  invalid						      |	  3 5 + 4 2 + - 
