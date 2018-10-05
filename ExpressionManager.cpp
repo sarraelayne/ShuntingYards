@@ -151,17 +151,17 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
     int topPrecedence;
     cout << "in process_operator" << endl;
     if (!operatorStack.empty()) {
-        cout << "empty check" << endl; /////////ERROR HERE
-        if (operatorStack.top() == "(") {
+        cout << "empty check" << operatorStack.top() << endl;
+        if (operatorStack.top() == "(" || operatorStack.top() == "[" || operatorStack.top() == "{") {
             cout << "top check" << endl;
-            if (op == "(") {
+            if (op == "(" || op == "[" || op == "{") {
                 cout << "push" << endl;
                 operatorStack.push(currOp);
                 return true;
             }
         }
     }
-    else if (currOp == ")" || currOp == "]" || currOp == "}") {
+    if (currOp == ")" || currOp == "]" || currOp == "}") {
         cout << "curr op if" << endl;
         string top = operatorStack.top();
         while(operatorStack.top() != "(") {
@@ -176,6 +176,9 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
         return true;
     }
     else {
+        if (operatorStack.empty()){
+            cout << "why do you hate me" << endl;
+        }
         cout << "precedence else" << endl;
         if (currOp == "*" || currOp == "/" || currOp == "%") {
             cout << "curr * / %" << endl;
@@ -194,7 +197,7 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
             topPrecedence = 2;
         }
         cout << "is it here 3" << endl;
-        if (operatorStack.top() == "+" ||operatorStack.top() == "-") {
+        if (operatorStack.top() == "+" || operatorStack.top() == "-") {
             cout << "top + - if" << endl;
             operatorStack.pop();
             topPrecedence = 1;
@@ -202,6 +205,7 @@ bool ExpressionManager::process_operator(stack<string> &operatorStack, string &p
         cout << "before while" << endl;
         while (opPrecedence <= topPrecedence) {
             postfixString.append(operatorStack.top());
+            cout << "PfString: " << postfixString << endl;
         }
         return true;
     }
@@ -217,6 +221,7 @@ string ExpressionManager::infixToPostfix(string infixExpression){
     while (getline(ss, token, ' ')) {
         if((token == "+") || (token == "-") || (token == "*") || (token == "/") || (token == "%")) {
             operatorStack.push(token);
+            cout << "OS top: " << operatorStack.top() << endl;
             cout << "in token operators if" << endl;
             if (process_operator(operatorStack, postfixString, op) == false) { //DEFINITELY SOMETHING IN HERE
                 return "error: false operator";
